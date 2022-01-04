@@ -3,15 +3,17 @@ package org.aviran.cookiebar2;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Activity;
+import android.content.Context;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.AnimRes;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
 
 /**
  * CookieBar is a lightweight library for showing a brief message at the top or bottom of the
@@ -29,18 +31,21 @@ public class CookieBar {
     public static final int BOTTOM = Gravity.BOTTOM;
 
     private Cookie cookieView;
-    private final Activity context;
+    private final Context context;
+    private final Activity _ac;
 
-    public static Builder build(Activity activity) {
-        return new CookieBar.Builder(activity);
+    public static Builder build(Context activity, Activity _ac) {
+        return new CookieBar.Builder(activity, _ac);
     }
 
-    public static void dismiss(Activity activity) {
-        new CookieBar(activity, null);
+    public static void dismiss(Context activity, Activity _ac) {
+        new CookieBar(activity, null, _ac);
     }
 
-    private CookieBar(Activity context, Params params) {
+    private CookieBar(Context context, Params params, Activity activity) {
         this.context = context;
+        this._ac = activity;
+
         if (params == null) {
             // since params is null, this CookieBar object can only be used to dismiss
             // existing cookies
@@ -54,7 +59,7 @@ public class CookieBar {
 
     private void show() {
         if (cookieView != null) {
-            final ViewGroup decorView = (ViewGroup) context.getWindow().getDecorView();
+            final ViewGroup decorView = (ViewGroup) _ac.getWindow().getDecorView();
             final ViewGroup content = decorView.findViewById(android.R.id.content);
             if (cookieView.getParent() == null) {
                 ViewGroup parent = cookieView.getLayoutGravity() == Gravity.BOTTOM ?
@@ -65,7 +70,7 @@ public class CookieBar {
     }
 
     private void dismiss() {
-        final ViewGroup decorView = (ViewGroup) context.getWindow().getDecorView();
+        final ViewGroup decorView = (ViewGroup) _ac.getWindow().getDecorView();
         final ViewGroup content = decorView.findViewById(android.R.id.content);
 
         removeFromParent(decorView);
@@ -100,7 +105,7 @@ public class CookieBar {
                 ((Cookie) child).dismiss(new CookieBarDismissListener() {
                     @Override
                     public void onDismiss(int dismissType) {
-                        if(dismissListener != null) {
+                        if (dismissListener != null) {
                             dismissListener.onDismiss(DismissType.REPLACE_DISMISS);
                         }
                         parent.addView(cookie);
@@ -114,7 +119,7 @@ public class CookieBar {
     }
 
     private void removeStaleCookies(ViewGroup parent, int topCookie) {
-        for(int i = 0; i < topCookie; i++) {
+        for (int i = 0; i < topCookie; i++) {
             View child = parent.getChildAt(i);
             if (child instanceof Cookie && !((Cookie) child).isRemovalInProgress()) {
                 Cookie currentCookie = (Cookie) child;
@@ -131,13 +136,15 @@ public class CookieBar {
     public static class Builder {
 
         private final Params params = new Params();
-        private final Activity context;
+        private final Context context;
+        private final Activity activity;
 
         /**
          * Create a builder for an cookie.
          */
-        Builder(Activity activity) {
+        Builder(Context activity, Activity _ac) {
             this.context = activity;
+            this.activity = _ac;
         }
 
         public Builder setIcon(@DrawableRes int iconResId) {
@@ -210,11 +217,10 @@ public class CookieBar {
         /**
          * Sets cookie position
          *
-         * @deprecated As of CookieBar2 1.1.0, use
-         *             {@link #setCookiePosition(int)} instead.
-
          * @param layoutGravity Cookie position, use either CookieBar.TOP or CookieBar.BOTTOM
          * @return builder
+         * @deprecated As of CookieBar2 1.1.0, use
+         * {@link #setCookiePosition(int)} instead.
          */
         @Deprecated
         public Builder setLayoutGravity(int layoutGravity) {
@@ -273,7 +279,7 @@ public class CookieBar {
         }
 
         public CookieBar create() {
-            return new CookieBar(context, params);
+            return new CookieBar(context, params, activity);
         }
 
         public CookieBar show() {

@@ -31,7 +31,7 @@ dependencies {
 
 ext {
     PUBLISH_GROUP_ID = 'org.aviran.cookiebar2'
-    PUBLISH_VERSION = '1.1.5'
+    PUBLISH_VERSION = '1.1.6'
     PUBLISH_ARTIFACT_ID = 'cookiebar2'
 }
 

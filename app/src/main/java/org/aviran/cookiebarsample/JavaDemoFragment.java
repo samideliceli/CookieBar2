@@ -49,7 +49,7 @@ public class JavaDemoFragment extends Fragment {
         btnTop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CookieBar.build(getActivity())
+                CookieBar.build(getActivity(),requireActivity())
                         .setTitle(R.string.top_cookie_title)
                         .setTitleColor(R.color.yellow)
                         .setMessage(getString(R.string.top_cookie_message, ++topCookieCounter))
@@ -90,7 +90,7 @@ public class JavaDemoFragment extends Fragment {
         btnBottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CookieBar.build(getActivity())
+                CookieBar.build(getActivity(),requireActivity())
                         .setDuration(5000)
                         .setTitle(R.string.bottom_cookie_title)
                         .setIcon(R.mipmap.ic_launcher)
@@ -114,7 +114,7 @@ public class JavaDemoFragment extends Fragment {
         btnCustomAnimation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CookieBar.build(getActivity())
+                CookieBar.build(getActivity(),requireActivity())
                         .setTitle(R.string.custom_anim_cookie_title)
                         .setMessage(R.string.custom_anim_cookie_message)
                         .setIcon(R.drawable.ic_android_white_48dp)
@@ -132,7 +132,7 @@ public class JavaDemoFragment extends Fragment {
         btnBottomAnimated.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CookieBar.build(getActivity())
+                CookieBar.build(getActivity(),requireActivity())
                         .setTitle(R.string.fancy_cookie_title)
                         .setMessage(R.string.fancy_cookie_message)
                         .setIcon(R.drawable.ic_settings_white_48dp)
@@ -159,7 +159,7 @@ public class JavaDemoFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                CookieBar.build(getActivity())
+                CookieBar.build(getActivity(),requireActivity())
                         .setCustomView(R.layout.custom_cookie)
                         .setCustomViewInitializer(new CookieBar.CustomViewInitializer() {
                             @Override
@@ -186,7 +186,7 @@ public class JavaDemoFragment extends Fragment {
                         .setAction("Close", new OnActionClickListener() {
                             @Override
                             public void onClick() {
-                                CookieBar.dismiss(getActivity());
+                                CookieBar.dismiss(getActivity(),requireActivity());
                             }
                         })
                         .setTitle(R.string.custom_view_cookie_title)
@@ -201,7 +201,7 @@ public class JavaDemoFragment extends Fragment {
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CookieBar.dismiss(getActivity());
+                CookieBar.dismiss(getActivity(),requireActivity());
             }
         });
     }
